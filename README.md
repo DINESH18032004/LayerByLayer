@@ -160,21 +160,21 @@ The system combines SAR and AIS data to significantly reduce false positives. Pr
 
 ### **Languages**
 
-* Python
-* JavaScript (Dashboard)
+* Python – Used for data processing, machine learning models, and backend automation.
+* JavaScript (Dashboard) – Powers the interactive front-end visualization and real-time monitoring dashboard.
 
 ### **AI / ML**
 
-* PyTorch
-* Scikit-learn
-* OpenCV
-* GeoPandas
+* PyTorch – Framework for training and deploying deep learning models like CNNs and LSTMs.
+* Scikit-learn – Provides algorithms such as Isolation Forest for vessel anomaly detection.
+* OpenCV – Used for SAR image preprocessing, filtering, and patch extraction.
+* GeoPandas – Handles geospatial data operations for mapping and spatial analysis.
 
 ### **Data Providers**
 
-* Sentinel-1 SAR
-* MarineTraffic AIS
-* Spire Maritime AIS
+* Sentinel-1 SAR – Supplies radar imagery for detecting surface anomalies and oil slick patterns.
+* MarineTraffic AIS – Provides live vessel position and movement data from coastal receivers.
+* Spire Maritime AIS – Delivers global satellite-based AIS feeds for offshore and remote regions.
 
 ---
 
@@ -182,9 +182,11 @@ The system combines SAR and AIS data to significantly reduce false positives. Pr
 
 ###  AI-Based Spill Severity Estimation
 
-Use U-Net or Mask R-CNN to assess spill area, spread rate, and thickness.
+Future versions of the system can incorporate advanced segmentation models such as U-Net or Mask R-CNN to quantify the physical characteristics of detected spills. These models would produce detailed spill boundaries, allowing accurate estimation of affected area and oil thickness variations. Severity scoring helps prioritize response resources and assess ecological impact. This enhancement transforms detection from a binary alert into a full analytical assessment.
 
 ###  Spill Drift & Weather Forecasting
+
+Integrating environmental data—such as wind fields, tide models, and ocean currents—would enable the system to predict how a spill will move over time. Drift forecasting provides early insight into which coastlines or marine habitats are at risk. Combining live meteorological feeds with fluid dynamics modeling supports better decision-making for containment and cleanup operations. This feature strengthens the system’s value during multi-day spill events.
 
 Integrate:
 
@@ -194,15 +196,15 @@ Integrate:
 
 ###  Blockchain Event Logging
 
-Ensures tamper-proof evidence for insurance and legal claims.
+A blockchain-backed logging system would store spill events, vessel activity, and detection timestamps in a secure, tamper-proof ledger. This ensures that all evidence related to an incident remains verifiable for legal, regulatory, and insurance purposes. Immutable records improve transparency and accountability for vessels operating in sensitive waters. Such a system strengthens compliance with international maritime environmental standards.
 
 ###  Federated Learning Support
 
-Enables international agencies to train models without sharing raw data.
+Federated learning would allow different maritime agencies or countries to collaboratively improve detection models without sharing raw data. Each participant trains on their own datasets locally, contributing only model updates. This preserves data privacy and meets security requirements while still improving global model performance. It is especially useful for regions with restricted AIS or SAR data access.
 
 ###  On-Vessel Edge AI
 
-Runs lightweight CNN + AIS anomaly detection locally on ships.
+Deploying lightweight CNN and AIS anomaly models directly on vessels would enable real-time, onboard detection without relying on cloud connectivity. Ships could receive immediate alerts about risky behavior or nearby spills, improving safety and situational awareness. Edge inference also reduces latency and allows monitoring even in bandwidth-limited regions. This feature expands the system’s usability beyond centralized control centers.
 
 ---
 
