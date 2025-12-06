@@ -1,274 +1,109 @@
 # LayerByLayer
 
----
+# Real-Time Oil Spill Detection Using SAR–AIS Data Fusion
+## AI-Powered Maritime Environmental Monitoring
 
-#  Real-Time Oil Spill Detection Using SAR–AIS Data Fusion
+## Overview
 
-### AI-Powered Maritime Environmental Monitoring
+This system provides real-time oil spill detection by combining Synthetic Aperture Radar (SAR) satellite imagery with Automatic Identification System (AIS) vessel tracking data. Deep learning models classify spills from radar images, anomaly detection evaluates vessel behavior, and a multi-channel alerting framework enables quick responses in maritime environments.
 
-![Python](https://img.shields.io/badge/Python-3.10-blue.svg)
+## Problem Statement
 
----
-
-##  Overview
-
-This project introduces a **real-time oil spill detection system** that fuses **Synthetic Aperture Radar (SAR)** satellite imagery with **Automatic Identification System (AIS)** vessel tracking data. The framework applies **deep learning**, **anomaly detection**, and **multi-channel alerting** to deliver accurate and scalable spill detection for maritime environmental protection.
-
----
-
-##  Problem Statement
-
-Traditional oil spill monitoring methods face significant constraints:
-
-* Slow, manual reporting
-* High false positives due to single-source detection
-* Lack of predictive vessel behavior monitoring
-* Insufficient connectivity in offshore areas
-* Limited automation in existing surveillance systems
-
-**Objective:** Develop an **AI-driven, automated** system capable of detecting spills with high precision in real time.
+Oil spills often go unnoticed for long periods because traditional detection depends heavily on manual reports or infrequent satellite checks. SAR-only surveillance generates many false positives because natural phenomena can resemble oil slicks. Existing systems also cannot predict vessel behavior before a spill happens. Remote maritime zones often lack connectivity, preventing timely communication. Manual verification slows down response workflows, and conventional architectures struggle to scale across large ocean regions.
+Objective: Build an AI-driven, automated, scalable system that detects spills accurately and delivers alerts instantly.
 
 ## How This System Addresses the Problem
+### Late Detection & Slow Response
 
-Traditional oil spill monitoring systems fail mainly due to delayed detection, single-source dependency, and lack of automation. The LayerByLayer Real-Time SAR–AIS Fusion System solves these limitations through a multilayered, intelligent workflow:
+Traditional systems detect spills too late due to manual observation and long intervals between image captures.
 
-### 1. Overcoming Slow & Manual Detection
+Solution: 
+Live SAR imagery and continuous AIS streams are processed automatically using serverless computing, allowing detections within seconds of data arrival.
 
-Problem:
-Oil spills are often detected hours or days later through manual observation, patrol reports, or delayed satellite analysis.
+### High False Positives from SAR Alone
 
-Solution:
+Radar images frequently misinterpret calm-water zones, algae, or ship wakes as oil spills.
 
-The system ingests live SAR satellite imagery at frequent intervals.
+Solution: A CNN identifies candidate spill regions, and vessel behavior from AIS is analyzed to verify whether nearby ships showed suspicious movement patterns, reducing false alarms significantly.
 
-AIS streams update every few seconds.
+### No Early Prediction of Spill Risk
 
-Serverless cloud functions ensure instant processing once new data arrives.
+Older systems only detect oil after it is visible on the water surface.
 
-Result: Near real-time detection (seconds to minutes) instead of manual delays.
+Solution: LSTM models analyze vessel motion sequences to predict unusual behaviors such as abrupt halts or route deviations, generating early warnings before spills occur.
 
-### 2. Reducing False Positives in SAR-Only Detection
+### Connectivity Issues in Offshore Regions
 
-Problem:
-SAR images alone often misclassify look-alike phenomena such as:
+Many spill-prone areas lack cellular or internet coverage, preventing alerts from reaching authorities.
 
-Low wind areas
+Solution: Alerts can be transmitted via AIS broadcasts, VHF maritime radio, and satellite Short Burst Data, ensuring communication even in remote locations.
 
-Algal blooms
+### Manual Verification Delays
 
-Ship wakes
+Human review slows down detection pipelines and causes inconsistent responses.
 
-Calm water shadows
+Solution: Automated SAR classification, AIS scoring, and fusion-based confirmation enable the system to dispatch alerts without requiring human intervention.
 
-This leads to high false alarm rates.
+### Lack of Scalability & Regional Adaptation
 
-Solution:
+Conventional systems perform poorly when deployed across vast or diverse maritime regions.
 
-A dedicated CNN classifier detects spill patterns with higher precision.
+Solution: A cloud-native microservice architecture scales automatically, while transfer learning and modular models adapt easily to new regions and environmental conditions.
 
-Detections are further validated using AIS anomalies (vessel slowing, erratic motion, route deviation).
+## System Architecture
+### Data Acquisition
 
-Cross-verification only triggers a spill when both sources agree.
+SAR data from Sentinel-1 satellites provides radar imagery of ocean surfaces, and AIS data supplies vessel positions and movement patterns.
 
-Result: High-confidence spill detection with drastically reduced false positives.
+### Data Fusion
 
-### 3. Predicting Spill-Risk Before It Happens
+SAR detections are aligned with AIS activity in both space and time to determine whether an observed anomaly is consistent with vessel behavior.
 
-Problem:
-Existing systems only detect spills after they occur—no early warning.
+### Detection Models
 
-Solution:
+A CNN classifies SAR patches as spill or non-spill. Isolation Forest identifies outlier vessel behavior. LSTM models evaluate temporal vessel motion for predictive insights.
 
-LSTM models analyze vessel behavior and flag suspicious patterns:
+### Alert Engine
 
-Abrupt halts
+Alerts are automatically delivered through email, SMS, mobile push notifications, dashboards, VHF radio messages, AIS safety broadcasts, and satellite SBD communication.
 
-Unusual U-turns
+### Deployment
 
-Speed oscillations
+The system is deployed using serverless functions (AWS Lambda or GCP Functions), containerized microservices, and cloud message queues for scalable, real-time processing.
 
-Loitering in non-designated zones
+## Algorithms Used
+### AIS Anomaly Detection
 
-Result: Early identification of vessels likely to discharge oil → proactive prevention.
+Isolation Forest detects abnormal vessel trajectories, LSTM models analyze motion patterns over time, and rule-based filters validate vessel proximity and timing.
 
-### 4. Operating Reliably in Low-Connectivity Maritime Zones
+### SAR Image Classification
 
-Problem:
-Offshore areas lack stable internet or cellular coverage, preventing timely reporting.
+A CNN distinguishes spill-like textures from background ocean patterns, transfer learning improves performance across different regions, and synthetic augmentation compensates for limited spill datasets.
 
-Solution:
-A multi-layered alert delivery system ensures uninterrupted communication through:
+## Data Pipeline
+### SAR Workflow
 
-AIS broadcast messages
+Incoming SAR images undergo noise reduction, geometric correction, patch extraction, and CNN inference to identify potential spills.
 
-VHF maritime radio
+### AIS Workflow
 
-Satellite Short Burst Data (SBD)
+AIS streams are continuously processed to generate anomaly scores using Isolation Forest and vessel-behavior predictions using LSTM.
 
-SMS & email when connectivity is available
+### Fusion Layer
 
-**Result: Alerts reach vessels & authorities even in remote, network-dark regions.
+A spill is confirmed only when SAR classification and AIS anomalies occur at the same location and time, ensuring high-confidence detection.
 
-### 5. Automating the Entire Detection → Alert Flow
+### Alert Dispatch
 
-Problem:
-Current workflows require human verification, leading to delays and inconsistencies.
+Alerts include the spill coordinates, associated vessel information, detection confidence, and the SAR-derived visual evidence.
 
-Solution:
-Every component is automated:
+### Alerting System
 
-SAR classification
+Alerts are delivered through multiple channels to maintain reliability. When networks are available, email, SMS, mobile notifications, and dashboards are used. In remote areas, VHF radio, AIS broadcasts, and satellite SBD ensure uninterrupted communication.
 
-AIS anomaly scoring
+### Innovation & Uniqueness
 
-Fusion-based confirmation
-
-Auto-triggered alerts
-
-Dashboard updates
-
-Serverless architecture removes the need for continuous human monitoring.
-
-Result: Fully automated, hands-free, real-time environmental surveillance.
-
-### 6. Supporting Scalable, Global Maritime Monitoring
-
-Problem:
-National-scale detection systems struggle to scale to international waters.
-
-Solution:
-
-Serverless compute (Lambda / Cloud Functions)
-
-Docker microservices
-
-Modular plug-and-play architecture
-
-Transfer learning for regional adaptation
-
-Result: The system scales from local coastal zones to global coverage with minimal configuration.
-
----
-
-##  System Architecture
-
-### **1️ Data Acquisition**
-
-* **SAR Image Feed:** Sentinel-1 (ESA Copernicus)
-* **AIS Vessel Feed:** MarineTraffic / Spire Maritime
-
-### **2️ Data Fusion**
-
-Combines SAR detections with AIS anomalies using:
-
-* Spatial correlation
-* Temporal synchronization
-* Vessel proximity and movement patterns
-
-### **3️ Detection Models**
-
-* **CNN** → SAR spill classification
-* **Isolation Forest** → AIS outlier movement detection
-* **LSTM** → Temporal vessel behavior prediction
-
-### **4️ Alert Engine**
-
-* Email
-* SMS
-* Mobile push
-* Dashboard notifications
-* VHF maritime radio
-* AIS broadcast messages
-* Satellite Short Burst Data (SBD)
-
-### **5️ Deployment**
-
-* Serverless architecture (AWS Lambda / GCP Functions)
-* Docker-based microservices
-* Cloud storage + message queues
-
----
-
-##  Algorithms Used
-
-###  AIS Anomaly Detection
-
-| Algorithm          | Purpose                                          |
-| ------------------ | ------------------------------------------------ |
-| Isolation Forest   | Detects abnormal patterns in vessel trajectories |
-| LSTM               | Predictive vessel behavior analysis              |
-| Rule-Based Filters | Validates proximity, timestamps, speed profiles  |
-
----
-
-###  SAR Image Classification
-
-| Algorithm                   | Purpose                                        |
-| --------------------------- | ---------------------------------------------- |
-| CNN                         | Distinguishes oil spill vs non-spill regions   |
-| Transfer Learning           | Adapts pre-trained models for new regions      |
-| Synthetic Data Augmentation | Compensates for low spill dataset availability |
-
----
-
-##  Data Pipeline
-
-### **1. SAR Image Workflow**
-
-* Noise reduction
-* Geometric correction
-* Patch extraction
-* CNN classification
-
-### **2. AIS Workflow**
-
-* Continuous AIS ingestion
-* Outlier detection (Isolation Forest)
-* Trajectory prediction (LSTM)
-
-### **3. Fusion Layer**
-
-A spill is validated **only when both SAR and AIS indicators align** spatially and temporally.
-
-### **4. Alert Dispatch**
-
-Alerts include:
-
-* Coordinates
-* Detected spill region
-* Vessel IDs
-* Confidence score
-* Timestamp
-
----
-
-##  Alerting System
-
-A multi-layered notification architecture ensures redundancy.
-
-### Channels:
-
-*  **Email Alerts** (with SAR snapshots)
-*  **SMS Alerts**
-*  **Push Notifications**
-*  **Live Dashboard Updates**
-*  **VHF Maritime Broadcasts**
-*  **AIS Safety Message Broadcasts**
-*  **Iridium SBD Satellite Alerts**
-
----
-
-##  Innovation & Uniqueness
-
-* **SAR + AIS multimodal fusion** → drastically reduced false positives
-* **Predictive anomaly detection** with LSTM for early warning
-* **Synthetic spill generation** for better model generalization
-* **Serverless cloud-native architecture** for high scalability
-* **Drone-based verification module** for real-time confirmation
-* **Edge-device compatibility** for onboard vessel deployment
-* **Modular microservice design** for easy extension
-
----
+The system combines SAR and AIS data to significantly reduce false positives. Predictive vessel modeling identifies risk before spills occur. Synthetic datasets improve training despite limited real examples. A serverless cloud-native structure supports global scaling. The system can integrate drone-based verification and operate on edge devices such as onboard ship computers.
 
 ##  Tech Stack
 
